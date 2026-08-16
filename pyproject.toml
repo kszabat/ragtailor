@@ -1,0 +1,32 @@
+[project]
+name = "ragtailor"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "black>=26.5.1",
+    "colpali-engine",
+    "docling>=2.117.0",
+    "llama-index-core>=0.14.23",
+    "llama-index-embeddings-huggingface>=0.7.0",
+    "llama-index-node-parser-docling>=0.4.2",
+    "llama-index-readers-docling>=0.4.2",
+    "llama-index-vector-stores-qdrant>=0.10.2",
+    "nicegui>=3.15.0",
+    "pydantic>=2.13.4",
+    "pydantic-settings>=2.14.2",
+    "python-dotenv>=1.2.2",
+    "qdrant-client>=1.18.0",
+    "ranx>=0.3.21",
+]
+
+[project.scripts]
+ragtailor = "ragtailor:main"
+
+[build-system]
+requires = ["uv_build>=0.12.1,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.uv.sources]
+colpali-engine = { git = "https://github.com/illuin-tech/colpali" }
