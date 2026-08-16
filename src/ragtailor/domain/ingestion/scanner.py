@@ -9,6 +9,7 @@ from ragtailor.domain.models import FileRecord, FileStatus
 
 _HASH_CHUNK_SIZE = 1024 * 1024
 
+
 def compute_hash(path: Path) -> str:
     digest = sha256()
 
@@ -18,3 +19,15 @@ def compute_hash(path: Path) -> str:
 
     return digest.hexdigest()
 
+
+@dataclass
+class ScanResult:
+    new_files: list[FileRecord] = field(default_factory=list)
+    changed_files: list[FileRecord] = field(default_factory=list)
+    missing_files: list[FileRecord] = field(default_factory=list)
+
+    @property
+    def to_be_processed(self) -> list[FileRecord]:
+        return self.new_files + self.changed_files
+
+    
