@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 from collections import defaultdict
 
 from qdrant_client import QdrantClient, models
@@ -24,9 +25,9 @@ def ensure_collections(
     visual_vector_size: int | None = None,
 ):
     if config.text_enabled:
-        assert (
-            config.qdrant_text_collection is not None
-        ), "qdrant_text_collection must be set if text_enabled is True"
+        assert config.qdrant_text_collection is not None, (
+            "qdrant_text_collection must be set if text_enabled is True"
+        )
         _ensure_text_collection(
             client,
             config.qdrant_text_collection,
@@ -35,9 +36,9 @@ def ensure_collections(
         )
 
     if config.visual_enabled:
-        assert (
-            config.qdrant_visual_collection is not None
-        ), "qdrant_visual_collection must be set if visual_enabled is True"
+        assert config.qdrant_visual_collection is not None, (
+            "qdrant_visual_collection must be set if visual_enabled is True"
+        )
         _ensure_visual_collection(
             client,
             config.qdrant_visual_collection,
@@ -88,21 +89,29 @@ def _ensure_visual_collection(
         ),
     )
 
+
 def delete_collections(client: QdrantClient, config: CollectionConfig) -> None:
-    collection_names = tuple(config.qdrant_text_collection, config.qdrant_visual_collection)
+    collection_names = tuple(
+        config.qdrant_text_collection, config.qdrant_visual_collection
+    )
 
     for name in collection_names:
         if name and client.collection_exists:
             client.delete_collection(name)
 
-def delete_points_for_file(client: QdrantClient, collection_name: str, file_id: str) -> None:
+
+def delete_points_for_file(
+    client: QdrantClient, collection_name: str, file_id: str
+) -> None:
     client.delete(
         collection_name=collection_name,
         points_selector=models.FilterSelector(
             filter=models.Filter(
                 must=[
-                    models.FieldCondition(key="file_id", match=models.MatchValue(value=file_id))
+                    models.FieldCondition(
+                        key="file_id", match=models.MatchValue(value=file_id)
+                    )
                 ]
             )
-        )
+        ),
     )
