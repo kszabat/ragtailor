@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import sqlite3
-from contextlib import contextmanager
-from datetime import datetime, timezone
-from pathlib import Path
 from collections.abc import Generator
+from contextlib import contextmanager
+from datetime import UTC, datetime
+from pathlib import Path
 
 from ragtailor.domain.models import (
     CollectionConfig,
@@ -100,7 +100,7 @@ class MetadataStore:
         return [_row_to_collection(row) for row in rows]
 
     def update_collection(self, config: CollectionConfig) -> None:
-        config = config.model_copy(update={"updated_at": datetime.now(timezone.utc)})
+        config = config.model_copy(update={"updated_at": datetime.now(UTC)})
         with self._connect() as conn:
             conn.execute(
                 """
@@ -178,9 +178,7 @@ class MetadataStore:
         num_pages: int | None = None,
     ) -> None:
         last_indexed_at = (
-            datetime.now(timezone.utc).isoformat()
-            if status == FileStatus.INDEXED
-            else None
+            datetime.now(UTC).isoformat() if status == FileStatus.INDEXED else None
         )
         with self._connect() as conn:
             conn.execute(
