@@ -133,7 +133,7 @@ class SearchOptions(BaseModel):
     use_visual: bool = True
     fuse_results: bool = False
     rerank_enabled: bool = False
-    top_k_rerank = 20
+    top_k_rerank: int = 20
 
 class SearchResult(BaseModel):
     source_type: SourceType
