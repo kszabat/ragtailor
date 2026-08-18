@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import uuid
-from datetime import datetime, timezone
-from functools import partial
+from datetime import UTC, datetime
 from enum import StrEnum
+from functools import partial
 
 from pydantic import BaseModel, Field, model_validator
 
@@ -48,8 +48,8 @@ class CollectionConfig(BaseModel):
     qdrant_text_collection: str | None = None
     qdrant_visual_collection: str | None = None
 
-    created_at: datetime = Field(default_factory=partial(datetime.now, timezone.utc))
-    updated_at: datetime = Field(default_factory=partial(datetime.now, timezone.utc))
+    created_at: datetime = Field(default_factory=partial(datetime.now, UTC))
+    updated_at: datetime = Field(default_factory=partial(datetime.now, UTC))
 
     @model_validator(mode="after")
     def _validate_mode_selection(self) -> CollectionConfig:
@@ -111,7 +111,7 @@ class FileRecord(BaseModel):
     error_message: str | None = None
     num_text_chunks: int | None = None
     num_pages: int | None = None
-    added_at: datetime = Field(default_factory=partial(datetime.now, timezone.utc))
+    added_at: datetime = Field(default_factory=partial(datetime.now, UTC))
     last_indexed_at: datetime | None = None
 
 class TextChunk(BaseModel):

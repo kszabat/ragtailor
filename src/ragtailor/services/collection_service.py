@@ -7,7 +7,6 @@ from ragtailor.domain.indexing.qdrant_client import (
     delete_points_for_file,
     ensure_collections,
 )
-
 from ragtailor.domain.metadata.store import MetadataStore
 from ragtailor.domain.models import CollectionConfig, TextSearchMode
 

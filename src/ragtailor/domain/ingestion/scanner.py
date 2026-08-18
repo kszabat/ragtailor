@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from hashlib import sha256
 from dataclasses import dataclass, field
+from hashlib import sha256
 from pathlib import Path
 
 from ragtailor.domain.metadata.store import MetadataStore
