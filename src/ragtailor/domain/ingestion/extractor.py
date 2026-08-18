@@ -24,13 +24,13 @@ class PdfExtractor(Protocol):
     def extract(self, pdf_path: str, file_id: str, output_dir: Path) -> Path:
         ...
 
-IMAGE_SCALE = 2.0
+# IMAGE_SCALE = 2.0
 
-pipeline_options = PdfPipelineOptions()
-pipeline_options.images_scale = IMAGE_SCALE
-pipeline_options.do_table_structure = True 
-pipeline_options.do_ocr = 
-pipeline_options.generate_page_images
+# pipeline_options = PdfPipelineOptions()
+# pipeline_options.images_scale = IMAGE_SCALE
+# pipeline_options.do_table_structure = True 
+# pipeline_options.do_ocr = 
+# pipeline_options.generate_page_images
 
 class DoclingExtractor(PdfExtractor):
     def __init__(self) -> None:
