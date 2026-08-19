@@ -1,3 +1,7 @@
+"""
+To use the SpladeSparseEmbedder one need to paste HuggingFace token in the environment variable (.env HF_TOKEN=your_token) and agree to the model license (https://huggingface.co/naver/splade-v3)
+"""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -22,7 +26,7 @@ class SpladeSparseEmbedder(SparseEmbedder):
             inputs=[text], convert_to_sparse_tensor=True
         )
         embedding_vector = _sparse_tensor_to_vectors(embedding_tensor)[0]
-        
+
         return embedding_vector
 
     def embed_documents(self, texts: list[str]) -> list[SparseVector]:
