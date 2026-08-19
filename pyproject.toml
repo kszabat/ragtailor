@@ -20,8 +20,8 @@ dependencies = [
     "python-dotenv>=1.2.2",
     "qdrant-client>=1.18.0",
     "ranx>=0.3.21",
+    "sentence-transformers>=5.6.1",
     "torch>=2.11.0",
-    "transformers>=5.8.1",
 ]
 
 [project.scripts]
@@ -37,6 +37,6 @@ colpali-engine = { git = "https://github.com/illuin-tech/colpali" }
 [dependency-groups]
 dev = [
     "mypy>=2.3.1",
-    "rich>=15.0.0",
+    "rich[jupyter]>=15.0.0",
     "ruff>=0.16.3",
 ]
