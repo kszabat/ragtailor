@@ -63,7 +63,7 @@ def _ensure_text_collection(
             size=dense_size, distance=models.Distance.COSINE
         )
     if mode in (TextSearchMode.SPARSE, TextSearchMode.HYBRID):
-        sparse_vectors_config[_SPARSE_VECTOR_NAME] = models.SparseVectorParams()
+        sparse_vectors_config[_SPARSE_VECTOR_NAME] = models.SparseVectorParams(index=models.SparseIndexParams(on_disk=True))
 
     client.create_collection(
         collection_name=name,
