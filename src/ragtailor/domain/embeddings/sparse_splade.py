@@ -39,16 +39,16 @@ class SpladeSparseEmbedder(SparseEmbedder):
 
 
 def _sparse_tensor_to_vectors(tensor: torch.Tensor) -> list[SparseVector]:
-    tensor = tensor.coalesce()
+    tensor = tensor.cpu().coalesce()
     row_idx, col_idx = tensor.indices()
     values = tensor.values()
-
+ 
     per_row_indices: list[list[int]] = [[] for _ in range(tensor.shape[0])]
     per_row_values: list[list[float]] = [[] for _ in range(tensor.shape[0])]
     for row, col, val in zip(row_idx.tolist(), col_idx.tolist(), values.tolist()):
         per_row_indices[row].append(col)
         per_row_values[row].append(val)
-
+ 
     return [
         SparseVector(indices=idxs, values=vals)
         for idxs, vals in zip(per_row_indices, per_row_values)
