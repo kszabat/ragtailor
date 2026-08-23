@@ -6,10 +6,10 @@ from ragtailor.domain.embeddings.base import DenseEmbedder
 class BgeM3DenseEmbedder(DenseEmbedder):
     dimension = 1024
 
-    def __init__(self, model_name: str = "BAAI/bge-m3", use_fp16: bool = False) -> None:
+    def __init__(self, model_name: str = "BAAI/bge-m3", use_fp16: bool = False, device: str | None = None) -> None:
         from FlagEmbedding import BGEM3FlagModel
 
-        self._model = BGEM3FlagModel(model_name, use_fp16=use_fp16)
+        self._model = BGEM3FlagModel(model_name, use_fp16=use_fp16, devices=device)
 
     def embed_query(self, text: str) -> list[float]:
         return self.embed_documents([text])[0]
