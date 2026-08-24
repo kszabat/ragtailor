@@ -17,14 +17,14 @@ class ColPaliVisualEmbedder(VisualMultiVectorEmbedder):
         self._device = device or get_torch_device(device="auto")
         self._model = ColPali.from_pretrained(
             model_name, torch_dtype=torch.bfloat16, device=self._device
-        )
+        ).eval()
         self._processor = ColPaliProcessor.from_pretrained(model_name)
 
     def embed_images(self, image_paths: list[str]) -> list[list[list[float]]]:
         from PIL import Image
 
         images = [Image.open(img_path).convert("RGB") for img_path in image_paths]
-        batch = self._processor.process_images(images).to(self._device)
+        batch = self._processor.process_images(images=images).to(self._device)
 
         with self._torch.inference_mode():
             embeddings = self._model(**batch)
