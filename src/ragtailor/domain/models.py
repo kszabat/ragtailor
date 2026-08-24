@@ -27,6 +27,11 @@ class SourceType(StrEnum):
     VISUAL = "visual"
 
 
+class EmbeddingStyle(StrEnum):
+    SINGLE_VECTOR = "single_vector"
+    MULTI_VECTOR = "multi_vector"
+
+
 def _generate_id() -> str:
     id = uuid.uuid4()
     return str(id)
@@ -40,10 +45,12 @@ class CollectionConfig(BaseModel):
     text_enabled: bool = False
     text_search_mode: TextSearchMode | None = None
     dense_model: str | None = None
+    dense_style: EmbeddingStyle | None = None
     sparse_model: str | None = None
 
     visual_enabled: bool = False
     visual_model: str | None = None
+    visual_style: EmbeddingStyle | None = None
 
     qdrant_text_collection: str | None = None
     qdrant_visual_collection: str | None = None
@@ -64,8 +71,23 @@ class CollectionConfig(BaseModel):
                 "text_search_mode must be specified when text_enabled is True."
             )
 
-        # TO DO: add more validation
-        # if self.text_enabled and self.text_search_mode == TextSearchMode.DENSE and not self.dense_model:
+        if (
+            self.text_enabled
+            and self.text_search_mode
+            in (
+                TextSearchMode.DENSE,
+                TextSearchMode.HYBRID,
+            )
+            and self.dense_style is None
+        ):
+            raise ValueError(
+                "dense_style must be specified when text_search_mode is DENSE or HYBRID."
+            )
+
+        if self.visual_enabled and self.visual_style is None:
+            raise ValueError(
+                "visual_style must be specified when visual_enabled is True."
+            )
 
         return self
 
@@ -74,12 +96,14 @@ class CollectionConfig(BaseModel):
         cls,
         name: str,
         source_folder: str,
-        text_enabled: bool = False,
+        text_enabled: bool,
+        visual_enabled: bool,
         text_search_mode: TextSearchMode | None = None,
         dense_model: str | None = None,
+        dense_style: EmbeddingStyle | None = None,
         sparse_model: str | None = None,
-        visual_enabled: bool = False,
         visual_model: str | None = None,
+        visual_style: EmbeddingStyle | None = None,
     ) -> CollectionConfig:
         collection_id = _generate_id()
 
@@ -90,9 +114,11 @@ class CollectionConfig(BaseModel):
             text_enabled=text_enabled,
             text_search_mode=text_search_mode,
             dense_model=dense_model,
+            dense_style=dense_style,
             sparse_model=sparse_model,
             visual_enabled=visual_enabled,
             visual_model=visual_model,
+            visual_style=visual_style,
             qdrant_text_collection=f"{collection_id}_text" if text_enabled else None,
             qdrant_visual_collection=(
                 f"{collection_id}_visual" if visual_enabled else None
@@ -100,6 +126,7 @@ class CollectionConfig(BaseModel):
         )
 
         return c
+
 
 class FileRecord(BaseModel):
     id: str = Field(default_factory=_generate_id)
@@ -114,6 +141,7 @@ class FileRecord(BaseModel):
     added_at: datetime = Field(default_factory=partial(datetime.now, UTC))
     last_indexed_at: datetime | None = None
 
+
 class TextChunk(BaseModel):
     id: str = Field(default_factory=_generate_id)
     file_id: str
@@ -121,11 +149,13 @@ class TextChunk(BaseModel):
     page_number: int | None = None
     text: str
 
+
 class VisualPage(BaseModel):
     id: str = Field(default_factory=_generate_id)
     file_id: str
     page_number: int
     image_path: str
+
 
 class SearchOptions(BaseModel):
     top_k_search: int = 100
@@ -135,7 +165,9 @@ class SearchOptions(BaseModel):
     rerank_enabled: bool = False
     top_k_rerank: int = 20
 
+
 class SearchResult(BaseModel):
+    id: str
     source_type: SourceType
     score: float
     file_id: str
