@@ -33,8 +33,8 @@ class ColPaliVisualEmbedder(VisualMultiVectorEmbedder):
 
         return embeddings_list
 
-    def embed_query(self, text: str) -> list[list[float]]:
-        batch = self._processor.process_queries(texts=[text]).to(self._device)
+    def embed_query(self, query: str) -> list[list[float]]:
+        batch = self._processor.process_queries(texts=[query]).to(self._device)
 
         with self._torch.inference_mode():
             embeddings = self._model(**batch)

@@ -19,8 +19,8 @@ class BgeM3SingleVectorEmbedder(TextSingleVectorEmbedder):
 
         self._model = BGEM3FlagModel(model_name, use_fp16=use_fp16, devices=device)
 
-    def embed_query(self, text: str) -> list[float]:
-        return self.embed_documents([text])[0]
+    def embed_query(self, query: str) -> list[float]:
+        return self.embed_texts(texts=[query])[0]
 
     def embed_texts(self, texts: list[str]) -> list[list[float]]:
         output = self._model.encode(

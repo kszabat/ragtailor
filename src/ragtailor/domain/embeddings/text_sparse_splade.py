@@ -21,9 +21,9 @@ class SpladeSparseEmbedder(SparseEmbedder):
 
         self._model = SparseEncoder(model_name, device=device)
 
-    def embed_query(self, text: str) -> SparseVector:
+    def embed_query(self, query: str) -> SparseVector:
         embedding_tensor = self._model.encode_query(
-            inputs=[text], convert_to_sparse_tensor=True
+            inputs=[query], convert_to_sparse_tensor=True
         )
         embedding_vector = _sparse_tensor_to_vectors(embedding_tensor)[0]
 
