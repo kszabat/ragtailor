@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from ragtailor.domain.embeddings.base import VisualEmbedder
+from ragtailor.domain.embeddings.base import VisualMultiVectorEmbedder
 
 
-class ColPaliVisualEmbedder(VisualEmbedder):
+class ColPaliVisualEmbedder(VisualMultiVectorEmbedder):
     vector_dimension = 128
 
     def init(
