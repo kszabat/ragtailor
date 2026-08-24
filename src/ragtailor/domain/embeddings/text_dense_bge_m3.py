@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from ragtailor.domain.embeddings.base import (
-    TextSingleVectorEmbedder,
     TextMultiVectorEmbedder,
+    TextSingleVectorEmbedder,
 )
 
 
