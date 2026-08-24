@@ -4,7 +4,7 @@ from ragtailor.domain.embeddings.base import VisualEmbedder
 
 
 class ColPaliVisualEmbedder(VisualEmbedder):
-    patch_dimension = 128
+    vector_dimension = 128
 
     def init(
         self, model_name: str = "vidore/colpali-v1.3", device: str | None = None
@@ -20,7 +20,7 @@ class ColPaliVisualEmbedder(VisualEmbedder):
         )
         self._processor = ColPaliProcessor.from_pretrained(model_name)
 
-    def embed_pages(self, image_paths: list[str]) -> list[list[list[float]]]:
+    def embed_images(self, image_paths: list[str]) -> list[list[list[float]]]:
         from PIL import Image
 
         images = [Image.open(img_path).convert("RGB") for img_path in image_paths]
